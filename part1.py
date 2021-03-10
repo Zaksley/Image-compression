@@ -1,10 +1,13 @@
 import numpy as np
 
-# Algorithme de la transformation de Householder non optimisée.
-# Prend X et Y vecteurs de même taille et de même norme.
-# Retourne une matrice
-# Complexité de n**2 avec n la taille des vecteurs.
 def houseHolder(X, Y):
+    '''
+    Fait le calcul de la transformation de Householder non optimisée. 
+    Complexité de n**2 avec n la taille des vecteurs.
+    @param X: un vecteur de taille n
+    @param Y: un vecteur de taille n de même norme que X
+    @return une matrice carrée de taille n
+    '''
     size = np.shape(X)[0]
     U = X - Y
     matU=np.array([U])
@@ -12,21 +15,32 @@ def houseHolder(X, Y):
     norme = np.linalg.norm(Udot)
     return np.identity(size) - (2 * Udot)/norme
 
-# Algorithme du calcul de la matrice de Householder par un vecteur.
-# Prend X, Y, V vecteurs de même taille dont X et Y sont de même norme.
-# Retourne un vecteur.
-# Complexité de 4n avec n la taille des vecteurs.
+
 def houseHolderOpti(X, Y, V):
+    '''
+    Fait le calcul de la matrice de Householder par un vecteur. 
+    Complexité de 4n avec n la taille des vecteurs.
+    @param X: un vecteur de taille n
+    @param Y: un vecteur de taille n de même norme que X
+    @param V: un vecteur de taille n
+    @return un vecteur de taille n
+    '''
     size = np.shape(X)[0]
     U = (X - Y)/np.linalg.norm(X-Y)
     alpha = np.dot(U, V)
     return V - 2*alpha*U
 
-# Algorithme du calcul de la matrice de Householder avec un ensemble de vecteurs.
-# Prend X, Y vecteurs de même taille et de même norme et M une matrice dont le nombre de colonnes est le même que la taille de X et Y.
-# Retourne une matrice
-# Complexité de 4n**2
+
 def houseHolderGen(X, Y, M):
+    '''
+    Fait le calcul de la matrice de Householder avec un ensemble de vecteurs.
+    Complexité de 4n**2.
+    @param X: un vecteur de taille p
+    @param Y: un vecteur de taille p et de même norme que X
+    @param M: une matrice de taille (n,p)
+    @return une matrice de taille (n,p)
+    '''
+    
     lines = np.shape(M)[0]
     columns = np.shape(X)[0]
     res = np.zeros((lines, columns))
@@ -36,20 +50,36 @@ def houseHolderGen(X, Y, M):
 
 #Tests des différentes fonctions
 if __name__ == '__main__':
-    print("Test de la transformation de Householder non optimisée:")
-    X = np.array([3, 4, 0])
-    Y = np.array([0, 0, 5])
-    print(houseHolder(X, Y), "\n")
+    def test_houseHolder():
+        '''
+        Test de la transformation de Householder non optimisée.
+        '''
+        print("Test de la transformation de Householder non optimisée:")
+        X = np.array([3, 4, 0])
+        Y = np.array([0, 0, 5])
+        print(houseHolder(X, Y), "\n")
+        
+    def test_houseHolderOpti():
+        '''
+        Test du calcul de la matrice Householder par un vecteur optimisée.
+        '''
+        print("Test du calcul de la matrice Householder par un vecteur optimisée:")
+        X = np.array([3, 4, 0])
+        Y = np.array([0, 0, 5])
+        V = np.array([5, 10, -5])
+        print(houseHolderOpti(X, Y, V), "\n")
+        
+    def test_houseHolderGen():
+        '''
+        Test du calcul de la matrice Householder avec un ensemble de vecteurs.
+        '''
+        print("Test du calcul de la matrice Householder avec un ensemble de vecteurs:")
+        X = np.array([3, 4, 0])
+        Y = np.array([0, 0, 5])
+        V = np.array([5, 10, -5])
+        M = np.array([V, V, V, V, V])
+        print(houseHolderGen(X, Y, M),"\n")
 
-    print("Test du calcul de la matrice Householder par un vecteur optimisée:")
-    X = np.array([3, 4, 0])
-    Y = np.array([0, 0, 5])
-    V = np.array([5, 10, -5])
-    print(houseHolderOpti(X, Y, V), "\n")
-
-    print("Test du calcul de la matrice Householder avec un ensemble de vecteurs:")
-    X = np.array([3, 4, 0])
-    Y = np.array([0, 0, 5])
-    V = np.array([5, 10, -5])
-    M = np.array([V, V, V, V, V])
-    print(houseHolderGen(X, Y, M),"\n")
+    test_houseHolder()
+    test_houseHolderOpti()
+    test_houseHolderGen()
