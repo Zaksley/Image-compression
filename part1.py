@@ -2,6 +2,7 @@ import numpy as np
 
 # Algorithme de la transformation de Householder non optimisée.
 # Prend X et Y vecteurs de même taille et de même norme.
+# Retourne une matrice
 # Complexité de n**2 avec n la taille des vecteurs.
 def houseHolder(X, Y):
     size = np.shape(X)[0]
@@ -9,11 +10,11 @@ def houseHolder(X, Y):
     matU=np.array([U])
     Udot = np.dot(matU.T,matU)
     norme = np.linalg.norm(Udot)
-    H = np.identity(size) - (2 * Udot)/norme
-    return H
+    return np.identity(size) - (2 * Udot)/norme
 
 # Algorithme du calcul de la matrice de Householder par un vecteur.
 # Prend X, Y, V vecteurs de même taille dont X et Y sont de même norme.
+# Retourne un vecteur.
 # Complexité de 4n avec n la taille des vecteurs.
 def houseHolderOpti(X, Y, V):
     size = np.shape(X)[0]
@@ -23,6 +24,7 @@ def houseHolderOpti(X, Y, V):
 
 # Algorithme du calcul de la matrice de Householder avec un ensemble de vecteurs.
 # Prend X, Y vecteurs de même taille et de même norme et M une matrice dont le nombre de colonnes est le même que la taille de X et Y.
+# Retourne une matrice
 # Complexité de 4n**2
 def houseHolderGen(X, Y, M):
     lines = np.shape(M)[0]
