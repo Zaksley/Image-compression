@@ -36,15 +36,21 @@ def compress(A, k):
             B[i][j] = A[i][j][2]
 
     #Applique transformations SVD
+    """
     (U_R, S_R, V_R) = factorisation_SVD(R)
     (U_G, S_G, V_G) = factorisation_SVD(G)
-    (U_B, S_B, V_B) = factorisation_SVD(B)
+    (U_B, S_B, V_B) = factorisation_SVD(B)  
+    """
+
+    (U_R, S_R, V_R) = np.linalg.svd(R)
+    (U_G, S_G, V_G) = np.linalg.svd(G)
+    (U_B, S_B, V_B) = np.linalg.svd(B)
 
     # Annulation des termes diagonaux dans S
     for i in range(k, n):
-        S_B[i][i] = 0
-        S_G[i][i] = 0
-        S_R[i][i] = 0
+        S_B[i][i] = float (0)
+        S_G[i][i] = float (0)
+        S_R[i][i] = float (0)
 
     # Récuperation des matrices RGB
     R = np.dot(np.dot(U_R, S_R), V_R)
@@ -60,13 +66,16 @@ def compress(A, k):
 
     return A
 
+
         # TESTS
 # ====================
 
     # Calcule compression de l'image
 image = mpimg.imread("essai.png")
+
 k = 250
 compressed_image = compress(image, k)
+print(compressed_image)
 
     # Affiche résultats
 plt.imshow(image)
