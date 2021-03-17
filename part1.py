@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def houseHolder(X, Y):
     '''
     Fait le calcul de la transformation de Householder non optimisée. 
@@ -10,8 +11,8 @@ def houseHolder(X, Y):
     '''
     size = np.shape(X)[0]
     U = X - Y
-    matU=np.array([U])
-    Udot = np.dot(matU.T,matU)
+    matU = np.array([U])
+    Udot = np.dot(matU.T, matU)
     norme = np.linalg.norm(Udot)
     return np.identity(size) - (2 * Udot)/norme
 
@@ -40,7 +41,7 @@ def houseHolderGen(X, Y, M):
     @param M: une matrice de taille (n,p)
     @return une matrice de taille (n,p)
     '''
-    
+
     lines = np.shape(M)[0]
     columns = np.shape(X)[0]
     res = np.zeros((lines, columns))
@@ -48,7 +49,8 @@ def houseHolderGen(X, Y, M):
         res[i] = houseHolderOpti(X, Y, M[i])
     return res
 
-#Tests des différentes fonctions
+
+# Tests des différentes fonctions
 if __name__ == '__main__':
     def test_houseHolder():
         '''
@@ -57,9 +59,22 @@ if __name__ == '__main__':
         print("Test de la transformation de Householder non optimisée:")
         X = np.array([3, 4, 0])
         Y = np.array([0, 0, 5])
-        print(houseHolder(X, Y), "\n")
-        
-    def test_houseHolderOpti():
+        H=houseHolder(X, Y)
+        print("H=\n",H, "\n")
+        print("HX=\n",np.dot(H,X))
+        print('Y=\n',Y);
+
+    def test_houseHolderOpti_definition():
+        '''
+        Test du calcul de la matrice Householder par le vecteur X pour vérifier sa définition.
+        '''
+        print("Test du calcul de la matrice Householder par le vecteur X pour vérifier sa définition:")
+        X = np.array([3, 4, 0])
+        Y = np.array([0, 0, 5])
+        print("HX=\n",houseHolderOpti(X, Y, X))
+        print('Y=\n',Y)
+
+    def test_houseHolderOpti_random_vector():
         '''
         Test du calcul de la matrice Householder par un vecteur optimisée.
         '''
@@ -68,7 +83,7 @@ if __name__ == '__main__':
         Y = np.array([0, 0, 5])
         V = np.array([5, 10, -5])
         print(houseHolderOpti(X, Y, V), "\n")
-        
+
     def test_houseHolderGen():
         '''
         Test du calcul de la matrice Householder avec un ensemble de vecteurs.
@@ -78,8 +93,9 @@ if __name__ == '__main__':
         Y = np.array([0, 0, 5])
         V = np.array([5, 10, -5])
         M = np.array([V, V, V, V, V])
-        print(houseHolderGen(X, Y, M),"\n")
+        print(houseHolderGen(X, Y, M), "\n")
 
     test_houseHolder()
-    test_houseHolderOpti()
+    test_houseHolderOpti_definition()
+    test_houseHolderOpti_random_vector()
     test_houseHolderGen()
