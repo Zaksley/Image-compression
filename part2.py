@@ -11,10 +11,10 @@ def bidiagonal_transformation(A,n,m):
         @returns {Qleft,BD,Qright} 
     '''
     k = min(n,m)
-    Qleft = np.eye(m,k)
+    Qleft = np.eye(n)
     BD = np.copy(A)
-    Qright = np.eye(k,n)
-    for i in range(k-1) :
+    Qright = np.eye(m)
+    for i in range(k) :
         if i < m-1 :
             X = BD[i:,i]
             alpha = -np.sign(X[0])*np.linalg.norm(X)
@@ -34,13 +34,13 @@ def bidiagonal_transformation(A,n,m):
             replace = np.dot(BD[(i+1):,(i+1):],H)
             BD[(i+1):,(i+1):] = replace
             Qright[(i+1):,:] = np.dot(H,Qright[(i+1):,:])
-        print("===DEB===")
-        print(Qleft)
-        print("=========")
-        print(BD)
-        print("=========")
-        print(Qright)
-        print("===FIN===")
+        # print("===DEB===")
+        # print(Qleft)
+        # print("=========")
+        # print(BD)
+        # print("=========")
+        # print(Qright)
+        # print("===FIN===")
     return (Qleft,BD,Qright)
 
 
@@ -51,13 +51,15 @@ def tests():
     (Ql1,DB1,Qr1) = bidiagonal_transformation(A,3,3)
     (Ql2,DB2,Qr2) = np.linalg.svd(A)
     
-    # print(Ql1)
+    print(Ql1)
     # print(Ql2)
     # print("=========")
-    # print(DB1)
+    print(DB1)
     # print(DB2)
     # print("=========")
-    # print(Qr1)
+    print(Qr1)
     # print(Qr2)
+    res = np.dot(Ql1,np.dot(DB1,Qr1));
+    print(res)
 
 tests()
