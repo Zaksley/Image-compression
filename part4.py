@@ -11,16 +11,21 @@ def factorisation_SVD(A):
     (n, m) = (A.shape[0], A.shape[1])
     
     # Récupération de la bidiagonale
-    BD = bidiagonal_transformation(A, n, m)[1]
+    U,S,V = bidiagonal_transformation(A, n, m)
 
     # Application des transformations QR sur la matrice bidiagonale
-    (U, S, V) = QRDecomposition(BD) 
+    while np.linalg.norm(np.diag(S,1))/np.linalg.norm(np.diag(S)) > 1e-14:
+        Q1,R1=np.linalg.qr(S.T)
+        Q2,R2=np.linalg.qr(R1.T)
+        S=R2
+        U=np.dot(U,Q2)
+        V=np.dot(Q1.T,V)
     return (U, S, V) 
 
 
 # Compresse l'image représenté par la matrice A par un coefficient k
-def compress(A, k): 
-
+def compress(image, k): 
+    A=np.copy(image)
     # Récupération de la matrice bidiagonale
     (n, m) = (A.shape[0], A.shape[1])
 
@@ -36,27 +41,22 @@ def compress(A, k):
             B[i][j] = A[i][j][2]
 
     #Applique transformations SVD
-    """
-    (U_R, S_R, V_R) = factorisation_SVD(R)
-    (U_G, S_G, V_G) = factorisation_SVD(G)
-    (U_B, S_B, V_B) = factorisation_SVD(B)  
-    """
+    # (U_R, S_R, V_R) = factorisation_SVD(R)
+    # (U_G, S_G, V_G) = factorisation_SVD(G)
+    # (U_B, S_B, V_B) = factorisation_SVD(B)  
 
+    
+    
+    
     (U_R, S_R, V_R) = np.linalg.svd(R)
     (U_G, S_G, V_G) = np.linalg.svd(G)
     (U_B, S_B, V_B) = np.linalg.svd(B)
 
-    # Annulation des termes diagonaux dans S
-    for i in range(k, n):
-        S_B[i][i] = float (0)
-        S_G[i][i] = float (0)
-        S_R[i][i] = float (0)
-
     # Récuperation des matrices RGB
-    R = np.dot(np.dot(U_R, S_R), V_R)
-    G = np.dot(np.dot(U_G, S_G), V_G)
-    B = np.dot(np.dot(U_B, S_B), V_B)
-
+    R = np.dot(np.dot(U_R[:,:k], np.diag(S_R[:k])), V_R[:,:k].T)
+    G = np.dot(np.dot(U_G[:,:k], np.diag(S_G[:k])), V_G[:,:k].T)
+    B = np.dot(np.dot(U_B[:,:k], np.diag(S_B[:k])), V_B[:,:k].T)
+    
     # Insertion des valeurs précédemment calculés
     for i in range(n):
         for j in range(m):
@@ -73,15 +73,15 @@ def compress(A, k):
     # Calcule compression de l'image
 image = mpimg.imread("essai.png")
 
-k = 250
+k = 30
 compressed_image = compress(image, k)
 print(compressed_image)
 
     # Affiche résultats
 plt.imshow(image)
-plt.show()  
+plt.savefig("original") 
 
 plt.imshow(compressed_image)
-plt.show()
+plt.savefig('compress')
 
 # ===================== 
