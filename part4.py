@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import numpy as np
 
-
 from part2 import bidiagonal_transformation
 from part3 import QRDecomposition
 
@@ -37,9 +36,9 @@ def compress(A, k):
             B[i][j] = A[i][j][2]
 
     #Applique transformations SVD
-    (U_B, S_B, V_B) = factorisation_SVD(R)
+    (U_R, S_R, V_R) = factorisation_SVD(R)
     (U_G, S_G, V_G) = factorisation_SVD(G)
-    (U_B, S_B, V_B) = factorisation_SVD(G)
+    (U_B, S_B, V_B) = factorisation_SVD(B)
 
     # Annulation des termes diagonaux dans S
     for i in range(k, n):
@@ -66,7 +65,7 @@ def compress(A, k):
 
     # Calcule compression de l'image
 image = mpimg.imread("essai.png")
-k = 15
+k = 250
 compressed_image = compress(image, k)
 
     # Affiche résultats
