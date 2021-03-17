@@ -9,25 +9,57 @@ from part3 import QRDecomposition
 
 # Transforme A en A = U * S * V
 def factorisation_SVD(A): 
-
-    # Récupération de la matrice bidiagonale
     (n, m) = (A.shape[0], A.shape[1])
-    BD = bidiagonal_transformation(A, n, m) 
+    
+    # Récupération de la bidiagonale
+    BD = bidiagonal_transformation(A, n, m)[1]
 
     # Application des transformations QR sur la matrice bidiagonale
-    (U, S, V) = transform_QR(BD) 
+    (U, S, V) = QRDecomposition(BD) 
     return (U, S, V) 
 
 
 # Compresse l'image représenté par la matrice A par un coefficient k
 def compress(A, k): 
 
-    (U, S, V) = factorisation_SVD(A)
-        # Annulation des termes diagonaux dans S
-    for i in range(k, np.shape(A)[0]):
-        S[i][i] = 0
-    print("erreur")
-    return (np.dot(np.dot(U, S), V))
+    # Récupération de la matrice bidiagonale
+    (n, m) = (A.shape[0], A.shape[1])
+
+    R = np.zeros((n, m))
+    G = np.zeros((n, m))
+    B = np.zeros((n, m))
+
+    # Créer 3 matrices RGB
+    for i in range(n):
+        for j in range(m):
+            R[i][j] = A[i][j][0]
+            G[i][j] = A[i][j][1]
+            B[i][j] = A[i][j][2]
+
+    #Applique transformations SVD
+    (U_B, S_B, V_B) = factorisation_SVD(R)
+    (U_G, S_G, V_G) = factorisation_SVD(G)
+    (U_B, S_B, V_B) = factorisation_SVD(G)
+
+    # Annulation des termes diagonaux dans S
+    for i in range(k, n):
+        S_B[i][i] = 0
+        S_G[i][i] = 0
+        S_R[i][i] = 0
+
+    # Récuperation des matrices RGB
+    R = np.dot(np.dot(U_R, S_R), V_R)
+    G = np.dot(np.dot(U_G, S_G), V_G)
+    B = np.dot(np.dot(U_B, S_B), V_B)
+
+    # Insertion des valeurs précédemment calculés
+    for i in range(n):
+        for j in range(m):
+            A[i][j][0] = R[i][j]
+            A[i][j][1] = G[i][j]
+            A[i][j][2] = B[i][j]
+
+    return A
 
         # TESTS
 # ====================
