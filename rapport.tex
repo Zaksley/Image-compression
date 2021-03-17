@@ -1,0 +1,81 @@
+\documentclass{article}
+
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx} %package to manage images
+
+%%%%%%%%%%%%%%%% Lengths %%%%%%%%%%%%%%%%
+\setlength{\textwidth}{15.5cm}
+\setlength{\evensidemargin}{0.5cm}
+\setlength{\oddsidemargin}{0.5cm}
+
+%%%%%%%%%%%%%%%% Variables %%%%%%%%%%%%%%%%
+\def\projet{3}
+\def\titre{Compression d’image par l’algorithme de décomposition SVD}
+\def\groupe{4}
+\def\equipe{12472}
+\def\responsible{Hector Piteau}
+\def\secretary{Enzo Medina}
+\def\others{Charles Wang, Dylan Machado}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%% Header %%%%%%%%%%%%%%%%
+\noindent\begin{minipage}{0.98\textwidth}
+  \vskip 0mm
+  \noindent
+  { \begin{tabular}{p{7.5cm}}
+      {\bfseries \sffamily
+        Projet \projet} \\ 
+      {\itshape \titre}
+    \end{tabular}}
+  \hfill 
+  \fbox{\begin{tabular}{l}
+      {~\hfill \bfseries \sffamily Groupe \groupe\ - Equipe \equipe
+        \hfill~} \\[2mm] 
+      Responsable : \responsible \\
+      Secrétaire : \secretary \\
+      Codeurs : \others
+    \end{tabular}}
+  \vskip 4mm ~
+
+  ~~~\parbox{0.95\textwidth}{\small \textit{Résumé~: Dans ce projet, on cherche à compresser une image par utilisation de méthodes matricielles basée sur la factorisation SVD. Il est segmenté en quatre parties. \\
+  Les trois premières permettent de transformer une matrice A (notre matrice contenant des triplets RGB) en un produit de 3 matrices : ${A = U*S*D}$. \\
+  La dernière partie montre l'exploitation des algorithmes précédents sur une image.
+    } \sffamily  }
+  \vskip 1mm ~
+\end{minipage}
+
+
+%%%%%%%%%%%%%%%% Main part %%%%%%%%%%%%%%%%
+\section*{Présentation du travail réalisé}
+
+
+\subsection*{Transformations de Householder}
+
+La première étape pour réaliser la compression d'une image est la construction d'une matrice H tel que ${H = Id - 2*U^t*U}$ avec U un vecteur (Définition de la Matrice de Householder). On réutilisera ensuite cette matrice dans les deux prochaines parties. \\
+
+
+Dans un premier temps, on développe l'algorithme "naïf". On implémente donc simplement le calcul défini précédemment en prenant deux vecteurs comme paramètre, X et Y. On définit alors ${U = X-Y}$. Soit n, la taille du vecteur, on a alors une complexité égale à ${O(n^2)}$ au vu des calculs de produit de matrices. \\
+
+Pour optimisé l'algorithme précédent, on raisonne cette fois ci sur le produit scalaire. Il n'y a alors plus besoin de calculer un produit de matrice mais cela nécessite un nouveau vecteur V en tant que nouveau paramètre. La complexité est alors de ${O(4n)}$ soit une complexité équivalente à du ${O(n)}$. \\
+
+Etant donné que l'on souhaite effectuer ces transformations de Householder sur des matrices, il est maintenant nécessaire de généraliser l'algorithme. Le vecteur V est remplacé par une matrice M de taille (n, m) et on exécute l'algorithme optimisé sur chaque ligne de la matrice. 
+La complexité est donc multiplié par n soit une complexité ${O(n^2)}$. \\
+   
+\subsection*{Mise sous forme bidiagonale} 
+   
+\subsection*{Transformations QR}
+
+
+\subsection*{Application à la compression d’image}
+    
+
+%%%%%%%%%%%%%%%% End part %%%%%%%%%%%%%%%%
+\section*{Conclusion et apports du projet}
+\paragraph{}
+
+
+
+\end{document}
