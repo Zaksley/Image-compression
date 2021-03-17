@@ -1,5 +1,6 @@
 import numpy as np
 from part1 import houseHolder 
+import math
 
 def bidiagonal_transformation(A,n,m):
     '''
@@ -39,7 +40,7 @@ def bidiagonal_transformation(A,n,m):
 
     return (Qleft,BD,Qright)
 
-def testBidiagonal():
+def testBidiagonalCarree():
     A = np.array([[21,2,3],
                   [4, 6,9],
                   [3,11,32]])
@@ -56,18 +57,93 @@ def testBidiagonal():
     estDiag = True
     (n,m) = DB1.shape
     epsilon = 10**(-14)
+    # Test si la diagonale n'est pas nulle
     for i in range(n):
         if(DB1[i,i] > -epsilon and DB1[i,i] < epsilon):
             estDiag=False
+    # Test si la deuxième diagonale n'est pas nulle nonplus
     for i in range(n-1):
         if(DB1[i,i+1] > -epsilon and DB1[i,i+1] < epsilon):
             estDiag=False
-    for i in range(n-1): # 0 1  
-        for j in range(i+1): # 
+    
+    # Test si la partie triangle bas de la matrice bidiagonale est bien nulle.
+    for i in range(n-1):  
+        for j in range(i+1): 
             if(DB1[i+1,j] < -epsilon or DB1[i+1,j] > epsilon):
                 estDiag=False
-    print("Is Resulting matrix is equal to A ? " + str(res == A))
-    print("Est-ce que la matrice BiDiag est bidiagonale ? " + str(estDiag))
+
+    # Test si la partie triangle haut de la matrice bidiagonale est bien nulle.
+    for i in range(n-2):  
+        for j in range(i+1): 
+            if(DB1[j,i+2] < -epsilon or DB1[j,i+2] > epsilon):
+                estDiag=False
+
+
+    # Test si  les deux matrices, celle de départ et celle calculée avec les valeurs de sortie de bidiag sont les même ou non.
+    isEqual = True
+    epsilon = 10**(-10)
+    for i in range(n):
+        for j in range(n):
+            d=abs(A[i,j] - res[i,j])
+            if(d>epsilon):
+                print(" " + str(A[i,j]) + " != " + str(res[i,j]) )
+                isEqual = False
+
+    print("[TEST] Carree : Est-ce que la matrice resultante est bien égale à la matrice initiale ? "+str(isEqual))
+    print("[TEST] Carree : Est-ce que la matrice BiDiag est bidiagonale ? " + str(estDiag))
+
+
+def testBidiagonalRect():
+    A = np.array([[21,598,3,98],
+                  [43, 6,9,159],
+                  [3,161,32,78]])
+    (Ql1,DB1,Qr1) = bidiagonal_transformation(A,3,4)
+    print("Matrice Qleft :")
+    print(Ql1)
+    print("Matrice Bidiagonale :")
+    print(DB1)
+    print("Matrice Qright :")
+    print(Qr1)
+    print("Matrice Qleft*BiDiag*Qright :")
+    res = np.dot(Ql1,np.dot(DB1,Qr1));
+    print(res)
+    estDiag = True
+    (n,m) = DB1.shape
+    epsilon = 10**(-14)
+    # Test si la diagonale n'est pas nulle
+    for i in range(n):
+        if(DB1[i,i] > -epsilon and DB1[i,i] < epsilon):
+            estDiag=False
+    # Test si la deuxième diagonale n'est pas nulle nonplus
+    for i in range(n-1):
+        if(DB1[i,i+1] > -epsilon and DB1[i,i+1] < epsilon):
+            estDiag=False
+    
+    # Test si la partie triangle bas de la matrice bidiagonale est bien nulle.
+    for i in range(n-1):  
+        for j in range(i+1): 
+            if(DB1[i+1,j] < -epsilon or DB1[i+1,j] > epsilon):
+                estDiag=False
+
+    # Test si la partie triangle haut de la matrice bidiagonale est bien nulle.
+    for i in range(n-2):  
+        for j in range(i+1): 
+            if(DB1[j,i+2] < -epsilon or DB1[j,i+2] > epsilon):
+                estDiag=False
+
+    # Test si  les deux matrices, celle de départ et celle calculée avec les valeurs de sortie de bidiag sont les même ou non.
+    isEqual = True
+    epsilon = 10**(-10)
+    for i in range(n):
+        for j in range(n):
+            d=abs(A[i,j] - res[i,j])
+            if(d>epsilon):
+                isEqual = False
+
+    print("[TEST] Rectangle : Est-ce que la matrice resultante est bien égale à la matrice initiale ? "+str(isEqual))
+    print("[TEST] Rectangle : Est-ce que la matrice BiDiag est bidiagonale ? " + str(estDiag))
+
 
 if __name__ == '__main__':
-    testBidiagonal()
+    testBidiagonalCarree()
+    testBidiagonalRect()
