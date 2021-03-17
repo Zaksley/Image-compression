@@ -24,7 +24,7 @@ def bidiagonal_transformation(A,n,m):
             replace = np.dot(H,BD[i:,i:])
             BD[i:,i:] = replace
             Qleft[:,i:] = np.dot(Qleft[:,i:],H)
-        print(np.linalg.norm(A-np.dot(Qleft,np.dot(BD,Qright))))
+        # print(np.linalg.norm(A-np.dot(Qleft,np.dot(BD,Qright))))
         if i < n-2:
             X = BD[i,(i+1):]
             alpha = -np.sign(X[0])*np.linalg.norm(X)
@@ -35,7 +35,7 @@ def bidiagonal_transformation(A,n,m):
             replace = np.dot(BD[(i+1):,(i+1):],H)
             BD[(i+1):,(i+1):] = replace
             Qright[(i+1):,:] = np.dot(H,Qright[(i+1):,:])
-        print(np.linalg.norm(A-np.dot(Qleft,np.dot(BD,Qright))))
+        # print(np.linalg.norm(A-np.dot(Qleft,np.dot(BD,Qright))))
 
     return (Qleft,BD,Qright)
 
@@ -64,7 +64,7 @@ def testBidiagonal():
             estDiag=False
     for i in range(n-1): # 0 1  
         for j in range(i+1): # 
-            if(DB1[i,j] < -epsilon or DB1[i,j] > epsilon):
+            if(DB1[i+1,j] < -epsilon or DB1[i+1,j] > epsilon):
                 estDiag=False
     print("Is Resulting matrix is equal to A ? " + str(res == A))
     print("Est-ce que la matrice BiDiag est bidiagonale ? " + str(estDiag))
