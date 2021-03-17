@@ -5,16 +5,16 @@ import numpy as np
 
 
 from part2 import bidiagonal_transformation
+from part3 import QRDecomposition
 
-"""
 # Transforme A en A = U * S * V
 def factorisation_SVD(A): 
 
     # Récupération de la matrice bidiagonale
-    M = bidiagonal_transformation(A, np.shape(A)[0], np.shape(A)[1]) 
+    BD = bidiagonal_transformation(A, np.shape(A)[0], np.shape(A)[1]) 
 
     # Application des transformations QR sur la matrice bidiagonale
-    (U, S, V) = transform_QR(M) 
+    (U, S, V) = transform_QR(BD) 
     return (U, S, V) 
 
 
@@ -46,5 +46,3 @@ plt.imshow(compressed_image)
 plt.show()
 
 # ===================== 
-
-"""
