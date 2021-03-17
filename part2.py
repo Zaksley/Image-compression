@@ -39,7 +39,6 @@ def bidiagonal_transformation(A,n,m):
 
     return (Qleft,BD,Qright)
 
-
 def testBidiagonal():
     A = np.array([[21,2,3],
                   [4, 6,9],
@@ -60,6 +59,15 @@ def testBidiagonal():
     for i in range(n):
         if(DB1[i,i] > -epsilon and DB1[i,i] < epsilon):
             estDiag=False
+    for i in range(n-1):
+        if(DB1[i,i+1] > -epsilon and DB1[i,i+1] < epsilon):
+            estDiag=False
+    for i in range(n-1): # 0 1  
+        for j in range(i+1): # 
+            if(DB1[i,j] < -epsilon or DB1[i,j] > epsilon):
+                estDiag=False
+    print("Is Resulting matrix is equal to A ? " + str(res == A))
     print("Est-ce que la matrice BiDiag est bidiagonale ? " + str(estDiag))
 
-testBidiagonal()
+if __name__ == '__main__':
+    testBidiagonal()
