@@ -1,5 +1,6 @@
 import numpy as np
-
+import random
+from timeit import default_timer as timer
 
 def houseHolder(X, Y):
     '''
@@ -94,8 +95,34 @@ if __name__ == '__main__':
         V = np.array([5, 10, -5])
         M = np.array([V, V, V, V, V])
         print(houseHolderGen(X, Y, M), "\n")
+    
+    def test_speed_optimization():
+        '''
+        Test de rapidité entre l'algorithme optimisé et celui non optimisé
+        '''
+        print("Test de rapidité entre l'algorithme optimisé et celui non optimisé:")
+        n=10000
+        X=np.zeros(n)
+        Y=np.zeros(n)
+        V=np.zeros(n)
+        for i in range(n):
+            X[i]=random.random()
+            V[i]=random.random()
+        Y[0]=np.linalg.norm(X)
+        start = timer()
+        H=houseHolder(X,Y)
+        A=np.dot(H,V)
+        end = timer()
+        print("Temps pris par l'algorithme non optimisé: ",end - start,"\n")
+        start = timer()
+        A=houseHolderOpti(X, Y, V);
+        end=timer()
+        print("Temps pris par l'algorithme optimisé: ", end - start, "\n")
+        
+        
 
     test_houseHolder()
     test_houseHolderOpti_definition()
     test_houseHolderOpti_random_vector()
     test_houseHolderGen()
+    test_speed_optimization()
