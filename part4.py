@@ -11,7 +11,8 @@ from part3 import QRDecomposition
 def factorisation_SVD(A): 
 
     # Récupération de la matrice bidiagonale
-    BD = bidiagonal_transformation(A, np.shape(A)[0], np.shape(A)[1]) 
+    (n, m) = (A.shape[0], A.shape[1])
+    BD = bidiagonal_transformation(A, n, m) 
 
     # Application des transformations QR sur la matrice bidiagonale
     (U, S, V) = transform_QR(BD) 
@@ -21,14 +22,12 @@ def factorisation_SVD(A):
 # Compresse l'image représenté par la matrice A par un coefficient k
 def compress(A, k): 
 
-    if (k <= 0) return
-
     (U, S, V) = factorisation_SVD(A)
         # Annulation des termes diagonaux dans S
     for i in range(k, np.shape(A)[0]):
         S[i][i] = 0
-    
-    return np.dot(np.dot(U, S), V) 
+    print("erreur")
+    return (np.dot(np.dot(U, S), V))
 
         # TESTS
 # ====================
