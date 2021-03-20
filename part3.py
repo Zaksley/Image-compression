@@ -1,4 +1,7 @@
 import numpy as np
+import matplotlib.pyplot as plt
+from random import randint
+from part1 import houseHolder
 
 def SVD_Decomposition_BidiagonalMatrix(BD,NMax):
     '''
@@ -18,12 +21,13 @@ def SVD_Decomposition_BidiagonalMatrix(BD,NMax):
         
     return (U,S,V)
 
+
 def QR_Transformation(BD):
     '''
         BD est la matrice bi-diagonale inférieure 
     '''
     (n,m) = BD.shape
-    R = A.copy()
+    R = BD.copy()
     Q = np.eye(n)
 
     for i in range(min(m-2,n-1)):
@@ -43,7 +47,7 @@ def QR_Transformation(BD):
     return (Q,R)
 
 
-def SVD_Decomposition_BidiagonalMatrix_Opti(BD):
+def SVD_Decomposition_BidiagonalMatrix_Opti(BD,NMax):
     '''
         BD représente la matrice bi-diagonale
     '''
@@ -52,7 +56,7 @@ def SVD_Decomposition_BidiagonalMatrix_Opti(BD):
     U = np.eye(n)
     V = np.eye(m)
     
-    for i in range(min(m-2,n-1)):
+    for i in range(NMax):
         (Q1,R1) = QR_Transformation(np.transpose(S))
         (Q2,R2) = QR_Transformation(np.transpose(R1))
         S = R2
@@ -60,3 +64,37 @@ def SVD_Decomposition_BidiagonalMatrix_Opti(BD):
         V = np.dot(np.transpose(Q1),V)
         
     return (U,S,V)
+
+def somme(BD):
+
+    (n,m) = BD.shape
+    res = 0
+
+    for i in range(n):
+        for j in range(m):
+            if (i != j):
+                res = res + abs(BD[i][j])
+
+    return res
+
+def convergence(BD,NMax):
+
+    values = np.zeros(NMax)
+    nValues = np.zeros(NMax)
+    
+    for i in range(NMax):
+        S = SVD_Decomposition_BidiagonalMatrix_Opti(BD,i)[1]
+        values[i] = somme(S)
+        nValues[i] = i
+
+    return (values,nValues)
+
+def test():
+    BD = np.array([[5,0,0,0,0],[1,3,0,0,0],[0,4,6,0,0],[0,0,7,10,0]])
+                
+    (values,nValues) = convergence(BD,500)
+    
+    plt.plot(nValues,values)
+    plt.show()
+
+test()
