@@ -4,7 +4,7 @@ import matplotlib.image as mpimg
 import numpy as np
 
 from part2 import bidiagonal_transformation
-from part3 import QRDecomposition
+# from part3 import QRDecomposition
 
 # Transforme A en A = U * S * V
 def factorisation_SVD(A): 
@@ -44,18 +44,15 @@ def compress(image, k):
     # (U_R, S_R, V_R) = factorisation_SVD(R)
     # (U_G, S_G, V_G) = factorisation_SVD(G)
     # (U_B, S_B, V_B) = factorisation_SVD(B)  
-
-    
-    
     
     (U_R, S_R, V_R) = np.linalg.svd(R)
     (U_G, S_G, V_G) = np.linalg.svd(G)
     (U_B, S_B, V_B) = np.linalg.svd(B)
 
     # Récuperation des matrices RGB
-    R = np.dot(np.dot(U_R[:,:k], np.diag(S_R[:k])), V_R[:,:k].T)
-    G = np.dot(np.dot(U_G[:,:k], np.diag(S_G[:k])), V_G[:,:k].T)
-    B = np.dot(np.dot(U_B[:,:k], np.diag(S_B[:k])), V_B[:,:k].T)
+    R = np.dot(np.dot(U_R[:,:k], np.diag(S_R[:k])), V_R[:k,:])
+    G = np.dot(np.dot(U_G[:,:k], np.diag(S_G[:k])), V_G[:k,:])
+    B = np.dot(np.dot(U_B[:,:k], np.diag(S_B[:k])), V_B[:k,:])
     
     # Insertion des valeurs précédemment calculés
     for i in range(n):
@@ -71,9 +68,9 @@ def compress(image, k):
 # ====================
 
     # Calcule compression de l'image
-image = mpimg.imread("essai.png")
+image = mpimg.imread("essai2.png")
 
-k = 30
+k = 10
 compressed_image = compress(image, k)
 print(compressed_image)
 
