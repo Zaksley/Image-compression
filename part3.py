@@ -1,6 +1,6 @@
 import numpy as np
 
-def QRDecomposition(BD):
+def SVD_Decomposition_BidiagonalMatrix(BD):
     '''
         BD représente la matrice bi-diagonale
     '''
