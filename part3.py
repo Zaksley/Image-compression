@@ -1,6 +1,6 @@
 import numpy as np
 
-def SVD_Decomposition_BidiagonalMatrix(BD):
+def SVD_Decomposition_BidiagonalMatrix(BD,NMax):
     '''
         BD représente la matrice bi-diagonale
     '''
@@ -9,7 +9,7 @@ def SVD_Decomposition_BidiagonalMatrix(BD):
     U = np.eye(n)
     V = np.eye(m)
     
-    for i in range(min(m-2,n-1)):
+    for i in range(NMax):
         (Q1,R1) = np.linalg.qr(np.transpose(S))
         (Q2,R2) = np.linalg.qr(np.transpose(R1))
         S = R2
