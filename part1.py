@@ -15,6 +15,8 @@ def houseHolder(X, Y):
     matU = np.array([U])
     Udot = np.dot(matU.T, matU)
     norme = np.linalg.norm(Udot)
+    if (X == Y).all() or norme == 0.0 or norme == 0:
+        return np.eye(size)
     return np.identity(size) - (2 * Udot)/norme
 
 
