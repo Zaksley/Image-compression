@@ -46,6 +46,7 @@ def compress(image, k):
     # (U_G, S_G, V_G) = factorisation_SVD(G)
     # (U_B, S_B, V_B) = factorisation_SVD(B)  
     
+    #On utilise la factorisation SVD de Numpy pour des soucis d'optimisations (On obtient des résultats plus rapides donc on peut affiner la précision)
     (U_R, S_R, V_R) = np.linalg.svd(R)
     (U_G, S_G, V_G) = np.linalg.svd(G)
     (U_B, S_B, V_B) = np.linalg.svd(B)
@@ -80,7 +81,13 @@ def distance_images(M_normal, M_compressed):
 def Efficiency_kCompress(M_normal):
 
         #Apparition du graphe
+
+    #*
+    # * x ne doit pas être supérieur au minimum (longueur, largeur) de l'image
+    # * Ceci est lié au produit des matrices dans la réunion des matrices gérés par la facto SVD
+    #*     
     x = range(1, 300, 5)
+
     plt.plot(x, [distance_images(M_normal, compress(M_normal, k)) for k in x ])
     plt.xlabel("Rang de compression k")
     plt.ylabel("Distance euclidienne entre les images")
@@ -93,8 +100,9 @@ image = mpimg.imread("essai.png")
 
         # Calcul distance
 # ====================
-
+"""
 Efficiency_kCompress(image)
+"""
 
 # ====================
 
@@ -103,7 +111,6 @@ Efficiency_kCompress(image)
 # ====================
 
     # Calcule compression de l'image
-#image = mpimg.imread("essai.png")
 """
 k = 10
 compressed_image = compress(image, k)
