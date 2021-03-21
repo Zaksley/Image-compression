@@ -26,12 +26,8 @@ def bidiagonal_transformation(A,n,m):
             replace = np.dot(H,BD[i:,i:])
             BD[i:,i:] = replace
             Qleft[:,i:] = np.dot(Qleft[:,i:],H)
-<<<<<<< HEAD
         # print(np.linalg.norm(A-np.dot(Qleft,np.dot(BD,Qright))))
         if i < m-2:
-=======
-        if i < n-2:
->>>>>>> db98fcf (Adding support in houseHolder to handler X==Y. Remove wrong bidiag in part2.)
             X = BD[i,(i+1):]
             alpha = -np.sign(X[0])*np.linalg.norm(X)
             Y = np.zeros(len(X))

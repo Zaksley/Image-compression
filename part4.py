@@ -15,13 +15,13 @@ def factorisation_SVD(A):
     U,S,V = bidiagonal_transformation(A, n, m)
 
     # Application des transformations QR sur la matrice bidiagonale
-    while np.linalg.norm(np.diag(S,1))/np.linalg.norm(np.diag(S)) > 1e-14:
+    while np.linalg.norm(np.diag(S,1))/np.linalg.norm(np.diag(S)) > 1e-2:
         Q1,R1=np.linalg.qr(S.T)
         Q2,R2=np.linalg.qr(R1.T)
         S=R2
         U=np.dot(U,Q2)
         V=np.dot(Q1.T,V)
-    return (U, S, V) 
+    return (U, S, V)
 
 
 # Compresse l'image représenté par la matrice A par un coefficient k
@@ -111,7 +111,7 @@ Efficiency_kCompress(image)
 # ====================
 
     # Calcule compression de l'image
-"""
+
 k = 10
 compressed_image = compress(image, k)
 print(compressed_image)
@@ -122,5 +122,5 @@ plt.savefig("original")
 
 plt.imshow(compressed_image)
 plt.savefig('compress')
-"""
+
 # ===================== 
