@@ -43,7 +43,7 @@ def bidiagonal_transformation(A,n,m):
     BD = np.array(A.copy(), dtype='float64')
     Qright = np.eye(m)
     for i in range(k) : # 0 ... k-1
-        if i < m-1 :
+        if i < n-1 :
             X = BD[i:,i]
             if np.linalg.norm(X) == 0.0 :
                 continue
@@ -55,7 +55,7 @@ def bidiagonal_transformation(A,n,m):
             BD[i:,i:] = replace
             Qleft[:,i:] = np.dot(Qleft[:,i:],H)
         # print(np.linalg.norm(A-np.dot(Qleft,np.dot(BD,Qright))))
-        if i < n-2:
+        if i < m-2:
             X = BD[i,(i+1):]
             if np.linalg.norm(X) == 0.0 :
                 continue
