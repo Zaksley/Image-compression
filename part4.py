@@ -2,6 +2,7 @@
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import numpy as np
+import math
 
 from part2 import bidiagonal_transformation
 # from part3 import QRDecomposition
@@ -63,13 +64,47 @@ def compress(image, k):
 
     return A
 
+def distance_images(M_normal, M_compressed):
+    n  = np.shape(M_normal)[0]
+    m = np.shape(M_normal)[1]
+    distance = 0
+
+        #Calcul de la distance euclidienne 
+    for i in range(n):
+        for j in range(m):
+            for k in range (3):
+                distance += (M_normal[i][j][k] - M_compressed[i][j][k])**2
+
+    return math.sqrt(distance)
+
+def Efficiency_kCompress(M_normal):
+
+        #Apparition du graphe
+    x = range(1, 300, 5)
+    plt.plot(x, [distance_images(M_normal, compress(M_normal, k)) for k in x ])
+    plt.xlabel("Rang de compression k")
+    plt.ylabel("Distance euclidienne entre les images")
+    plt.show()
+
+
+
+
+image = mpimg.imread("essai.png")
+
+        # Calcul distance
+# ====================
+
+Efficiency_kCompress(image)
+
+# ====================
+
 
         # TESTS
 # ====================
 
     # Calcule compression de l'image
-image = mpimg.imread("essai2.png")
-
+#image = mpimg.imread("essai.png")
+"""
 k = 10
 compressed_image = compress(image, k)
 print(compressed_image)
@@ -80,5 +115,5 @@ plt.savefig("original")
 
 plt.imshow(compressed_image)
 plt.savefig('compress')
-
+"""
 # ===================== 
