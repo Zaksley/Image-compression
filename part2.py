@@ -2,6 +2,33 @@ import numpy as np
 from part1 import houseHolder 
 import math
 
+def bidiag(A):
+    (n,m) = A.shape
+    Qleft = np.eye(n) 
+    Qright = np.eye(m)
+    BD = np.array(A.copy(), dtype='float64')
+    for i in range(n-1):
+        X = BD[i:n,i]
+        Y = np.zeros(len(X))
+        alpha = np.linalg.norm(X)
+        if(alpha == 0.0):
+            continue
+        Y[0] = -np.sign(X[0])*alpha
+        Q1 = houseHolder(X,Y) # BD[i:n,i] on a vector with a single non-zero element
+        Qleft = Qleft.dot(Q1)
+        BD = Q1.dot(BD)
+        if(not(i==(m-2))):
+            X = BD[i,(i+1):m]
+            Y = np.zeros(len(X))
+            alpha = np.linalg.norm(X)
+            if(alpha == 0.0):
+                continue
+            Y[0] = -np.sign(X[0])*alpha
+            Q2 = houseHolder(BD[i,(i+1):m],Y) #be a HH matrix mapping BD[i,(i+1):m] on a vector with a single non-zero element
+            Qright = Q2.dot(Qright) 
+            BD = BD.dot(Q2)
+    return(Qleft, BD, Qright)
+
 def bidiagonal_transformation(A,n,m):
     '''
         Cette fonction calcule la factorisation de A sous la forme bidiagonale.
@@ -18,6 +45,8 @@ def bidiagonal_transformation(A,n,m):
     for i in range(k) : # 0 ... k-1
         if i < m-1 :
             X = BD[i:,i]
+            if np.linalg.norm(X) == 0.0 :
+                continue
             alpha = -np.sign(X[0])*np.linalg.norm(X)
             Y = np.zeros(len(X))
             Y[0] = alpha
@@ -28,6 +57,8 @@ def bidiagonal_transformation(A,n,m):
         # print(np.linalg.norm(A-np.dot(Qleft,np.dot(BD,Qright))))
         if i < n-2:
             X = BD[i,(i+1):]
+            if np.linalg.norm(X) == 0.0 :
+                continue
             alpha = -np.sign(X[0])*np.linalg.norm(X)
             Y = np.zeros(len(X))
             Y[0] = alpha
@@ -41,9 +72,9 @@ def bidiagonal_transformation(A,n,m):
     return (Qleft,BD,Qright)
 
 def testBidiagonalCarree():
-    A = np.array([[21,2,3],
-                  [4, 6,9],
-                  [3,11,32]])
+    A = np.array([[0,0,0],
+                  [0,0,0],
+                  [0,0,0]])
     (Ql1,DB1,Qr1) = bidiagonal_transformation(A,3,3)
     print("Matrice Qleft :")
     print(Ql1)
